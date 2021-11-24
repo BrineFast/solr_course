@@ -11,9 +11,12 @@ __pycache__/
 build/
 develop-eggs/
 dist/
+*.json
+*.txt
 downloads/
 eggs/
 .eggs/
+.idea/
 lib/
 lib64/
 parts/
