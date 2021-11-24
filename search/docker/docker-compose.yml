@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  jcg_solr:
+    container_name: text_search
+    image: solr:latest
+    ports:
+     - "8983:8983"
+    volumes:
+      - data:/var/solr
+    command:
+      - solr-precreate
+      - text_search_core
