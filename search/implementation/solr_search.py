@@ -1,6 +1,7 @@
 from argparse import ArgumentParser
 from typing import NoReturn
 
+from transliterate import translit
 import ssl
 import pysolr
 import json
@@ -57,13 +58,13 @@ def make_synonyms(make: bool) -> NoReturn:
                 initial_word: str = f.readline().replace("\n", "")
                 if not initial_word:
                     break
-                synonyms = set()
-                ru_synonyms = rwn.get_synsets(initial_word)
+                synonyms: set = set()
+                ru_synonyms: list = rwn.get_synsets(initial_word).append(translit(initial_word, "ru"))
                 if ru_synonyms:
                     for synonym in ru_synonyms[0].get_words():
                         if synonym.lemma() != initial_word:
                             synonyms.add(synonym.lemma())
-                en_synonyms = wn.synsets(initial_word)
+                en_synonyms: list = wn.synsets(initial_word).append(translit(initial_word, "en"))
                 for synonym in en_synonyms:
                     if synonym.name().split(".")[0] != initial_word:
                         synonyms.add(synonym.name().split(".")[0])
