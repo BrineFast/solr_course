@@ -10,6 +10,8 @@ import nltk
 from nltk.corpus import wordnet as wn
 from wiki_ru_wordnet import WikiWordnet
 
+from search.implementation.utils.auto_correction_filter import AutoCorrectionFilter
+
 solr = pysolr.Solr("http://127.0.0.1:8983/solr/text_search_core", timeout=100)
 
 def clean_up(clean: bool) -> NoReturn:
@@ -80,7 +82,8 @@ def make_synonyms(make: bool) -> NoReturn:
 def make_request(make: bool) -> NoReturn:
     if make:
         query: str = input("Solr request (tip: 'field': 'value'): ")
-        print(solr.search(query))
+        corrected_query: str = AutoCorrectionFilter().correct(query)
+        print(solr.search(corrected_query))
 
 if __name__ == "__main__":
     parser: ArgumentParser = ArgumentParser()
